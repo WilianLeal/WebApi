@@ -18,9 +18,9 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<Produtos>>> BuscarTodos()
+        public async Task<ActionResult<List<Produtos>>> BuscarTodos([FromQuery] int skip = 0, [FromQuery] int take = 10)
         {
-            return await _service.BuscarTodos();
+            return await _service.BuscarTodos(skip, take);
         }
 
         [HttpPost]
@@ -35,7 +35,7 @@ namespace WebApi.Controllers
             }
             else
             {
-                throw new Exception("A data de fabricação não pode ser maior que a data de validade.");
+                return StatusCode(500, "A data de fabricação não pode ser maior que a data de validade.");
             }            
         }
 
@@ -51,7 +51,7 @@ namespace WebApi.Controllers
             }
             else
             {
-                throw new Exception("O produto buscado ou não exite ou foi deletado.");
+                return StatusCode(500, "O produto buscado ou não exite ou foi deletado.");
             }
         }
 
@@ -67,7 +67,7 @@ namespace WebApi.Controllers
             }
             else
             {
-                throw new Exception("A data de fabricação não pode ser maior que a data de validade.");
+                return StatusCode(500, "A data de fabricação não pode ser maior que a data de validade.");
             }
         }
 
@@ -77,6 +77,102 @@ namespace WebApi.Controllers
         {
             await _service.Delete(id);
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("{idInicio:int}/{idFim:int}")]
+        public async Task<ActionResult<List<Produtos>>> BuscarEntreIdProdutos(int idInicio, int idFim)
+        {
+            ActionResult<List<Produtos>> resutado = await _service.BuscarEntreIdProdutos(idInicio, idFim);
+
+            if (resutado != null)
+            {
+                return resutado;
+            }
+            else
+            {
+                return StatusCode(500, "Os produtos buscados não exitem ou foram deletados.");
+            }
+        }
+
+        [HttpGet]
+        [Route("fornecedores/{id:int}")]
+        public async Task<ActionResult<List<Produtos>>> BuscarPorIdFornecedor(int id)
+        {
+            ActionResult<List<Produtos>> resutado = await _service.BuscarIdFornecedor(id);
+
+            if (resutado != null)
+            {
+                return resutado;
+            }
+            else
+            {
+                return StatusCode(500, "Os produtos buscados não exitem ou foram deletados.");
+            }
+        }
+
+        [HttpGet]
+        [Route("fornecedores/{nome}")]
+        public async Task<ActionResult<List<Produtos>>> BuscarPorNomeFornecedor(string nome)
+        {
+            ActionResult<List<Produtos>> resutado = await _service.BuscarNomeFornecedoresTipo(nome);
+
+            if (resutado != null)
+            {
+                return resutado;
+            }
+            else
+            {
+                return StatusCode(500, "Os produtos buscados não exitem ou foram deletados.");
+            }
+        }
+
+        [HttpGet]
+        [Route("{nome}")]
+        public async Task<ActionResult<List<Produtos>>> BuscarPorNomeProduto(string nome)
+        {
+            ActionResult<List<Produtos>> resutado = await _service.BuscarNomeProdutosTipo(nome);
+
+            if (resutado != null)
+            {
+                return resutado;
+            }
+            else
+            {
+                return StatusCode(500, "Os produtos buscados não exitem ou foram deletados.");
+            }
+        }
+
+        [HttpGet]
+        [Route("fabricacao")]
+        public async Task<ActionResult<List<Produtos>>> BuscarEntreDatasFabricacaoProdutos([FromQuery] DateTime inicio, [FromQuery] DateTime fim)
+        {
+            ActionResult<List<Produtos>> resutado = await _service.BuscarEntreDataFabricacao(inicio, fim);
+
+            if (resutado != null)
+            {
+                return resutado;
+            }
+            else
+            {
+                return StatusCode(500, "Os produtos buscados não exitem ou foram deletados.");
+            }
+        }
+
+        [HttpGet]
+        [Route("validade")]
+        public async Task<ActionResult<List<Produtos>>> BuscarEntreDatasValidadeProdutos([FromQuery] DateTime inicio, [FromQuery] DateTime fim)
+        {
+            ActionResult<List<Produtos>> resutado = await _service.BuscarEntreDataValidade(inicio, fim);
+
+            if (resutado != null)
+            {
+                return resutado;
+            }
+            else
+            {
+                return StatusCode(500, "Os produtos buscados não exitem ou foram deletados.");
+            }
         }
     }
 }

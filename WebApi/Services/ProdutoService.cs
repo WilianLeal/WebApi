@@ -15,6 +15,48 @@ namespace WebApi.Services
             _context = service;
         }
 
+        public async Task<ActionResult<List<Produtos>>> BuscarEntreDataFabricacao(DateTime dataInicio, DateTime dataFim)
+        {
+            List<Produtos> produto = await _context.Produtos.AsNoTracking().Where(a => a.DataFabricacao >= dataInicio && a.DataFabricacao <= dataFim && a.SituacaoProduto == true).ToListAsync();
+
+            return produto;
+        }
+
+        public async Task<ActionResult<List<Produtos>>> BuscarEntreDataValidade(DateTime dataInicio, DateTime dataFim)
+        {
+            List<Produtos> produto = await _context.Produtos.AsNoTracking().Where(a => a.DataValidade >= dataInicio && a.DataValidade <= dataFim && a.SituacaoProduto == true).ToListAsync();
+
+            return produto;
+        }
+
+        public async Task<ActionResult<List<Produtos>>> BuscarIdFornecedor(int id)
+        {
+            List<Produtos> produto = await _context.Produtos.AsNoTracking().Where(a => a.IdFonecedor == id && a.SituacaoProduto == true).ToListAsync();
+
+            return produto;
+        }
+
+        public async Task<ActionResult<List<Produtos>>> BuscarEntreIdProdutos(int idInicio, int idFim)
+        {
+            List<Produtos> produto = await _context.Produtos.AsNoTracking().Where(a => a.IdProduto >= idInicio && a.IdProduto <= idFim && a.SituacaoProduto == true).ToListAsync();
+
+            return produto;
+        }
+
+        public async Task<ActionResult<List<Produtos>>> BuscarNomeFornecedoresTipo(string nome)
+        {
+            List<Produtos> produto = await _context.Produtos.AsNoTracking().Where(a => a.DescricaoFornecedor.Contains(nome) && a.SituacaoProduto == true).ToListAsync();
+
+            return produto;
+        }
+
+        public async Task<ActionResult<List<Produtos>>> BuscarNomeProdutosTipo(string nome)
+        {
+            List<Produtos> produto = await _context.Produtos.AsNoTracking().Where(a => a.DescricaoProduto.Contains(nome) && a.SituacaoProduto == true).ToListAsync();
+
+            return produto;
+        }
+
         public async Task<ActionResult<Produtos>> BuscarPorId(int id)
         {
             Produtos produto = await _context.Produtos.AsNoTracking().Where(a => a.IdProduto == id && a.SituacaoProduto == true).FirstOrDefaultAsync();
@@ -22,9 +64,9 @@ namespace WebApi.Services
             return produto;        
         }
 
-        public async Task<ActionResult<List<Produtos>>> BuscarTodos()
+        public async Task<ActionResult<List<Produtos>>> BuscarTodos(int skip, int take)
         {
-            List<Produtos> produtos = await _context.Produtos.ToListAsync();
+            List<Produtos> produtos = await _context.Produtos.AsNoTracking().Skip(skip).Take(take).ToListAsync();
             return produtos;
         }
 
