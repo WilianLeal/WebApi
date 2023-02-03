@@ -2,7 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApi.Services;
+using WebApi.Service.Services;
+using WebApi.Data.Data;
 
 namespace WebApi.Controllers
 {

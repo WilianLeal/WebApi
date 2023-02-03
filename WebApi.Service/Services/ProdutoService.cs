@@ -4,15 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using WebApi.Data.Data;
 
-namespace WebApi.Services
+namespace WebApi.Service.Services
 {
     public class ProdutoService : IProdutoService
     {
         private WebApiDbContext _context;
-        public ProdutoService(WebApiDbContext service)
+        public ProdutoService(WebApiDbContext context)
         {
-            _context = service;
+            _context = context;
         }
 
         public async Task<ActionResult<List<Produtos>>> BuscarEntreDataFabricacao(DateTime dataInicio, DateTime dataFim)

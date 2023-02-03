@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApi.Data.Data;
 
-namespace WebApi.Services
+namespace WebApi.Service.Services
 {
     public interface IProdutoService
     {
